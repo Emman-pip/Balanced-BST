@@ -23,10 +23,9 @@ const tree = () => {
     }
     return newArray.sort((a, b) => a - b);
   };
+  const mainRoot = {};
   const buildTree = (array) => {
-    // TODO: don't let already existing values repeat
     const sortedArray = formatArray(array);
-    // if (array.length ===0) return;
     if (sortedArray[0] === undefined) {
       return null;
     }
@@ -36,19 +35,14 @@ const tree = () => {
 
     const leftHalf = sortedArray.splice(0, mid);
     const rightHalf = sortedArray.splice(1, sortedArray.length - 1);
-    //this
-    // if (root.left === target || root.right === target || root.value === target){
-
-    // }
-    // console.log(rightHalf, mid);
 
     root.left = buildTree(leftHalf);
     root.right = buildTree(rightHalf);
 
-    // console.log("root", root);
+    mainRoot.root = root;
     return root;
   };
-  return { buildTree, prettyPrint };
+  return { buildTree, prettyPrint, mainRoot };
 };
 
 const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -56,3 +50,5 @@ console.log(array.sort((a, b) => a - b));
 const balancedBST = tree();
 const root = balancedBST.buildTree(array);
 balancedBST.prettyPrint(root);
+console.log(balancedBST.mainRoot);
+balancedBST.prettyPrint(balancedBST.mainRoot.root);
