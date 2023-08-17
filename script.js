@@ -42,13 +42,41 @@ const tree = () => {
     mainRoot.root = root;
     return root;
   };
-  return { buildTree, prettyPrint, mainRoot };
+
+  const insert = (value) => {
+    let tree = mainRoot.root;
+    while (true) {
+      if (value < tree.value) {
+        if (tree.left === null) {
+          tree.left = node(value);
+        }
+        tree = tree.left;
+        continue;
+      } else if (value > tree.value) {
+        if (tree.right === null) {
+          tree.right = node(value);
+        }
+        tree = tree.right;
+        continue;
+      } else if (value === tree.value) {
+        console.log(`${value} already exists in the BST.`);
+        break;
+      }
+    }
+  };
+  return { buildTree, prettyPrint, mainRoot, insert };
 };
 
 const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 console.log(array.sort((a, b) => a - b));
 const balancedBST = tree();
 const root = balancedBST.buildTree(array);
-balancedBST.prettyPrint(root);
+// balancedBST.prettyPrint(root);
 console.log(balancedBST.mainRoot);
+balancedBST.insert(252);
+balancedBST.insert(932);
+balancedBST.insert(213);
+balancedBST.insert(563534);
+balancedBST.insert(6321);
+
 balancedBST.prettyPrint(balancedBST.mainRoot.root);
