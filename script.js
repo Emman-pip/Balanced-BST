@@ -2,10 +2,18 @@ const node = (value, left = null, right = null) => {
   return { value, left, right };
 };
 
-const tree = (array) => {
+const tree = () => {
+  const formatArray = (array) => {
+    const newArray = [];
+    for (let i = 0; i < array.length; i++) {
+      if (newArray.includes(array[i])) continue;
+      newArray.push(array[i]);
+    }
+    return newArray.sort((a, b) => a - b);
+  };
   const buildTree = (array) => {
     // TODO: don't let already existing values repeat
-    const sortedArray = array.sort((a, b) => a - b);
+    const sortedArray = formatArray(array);
     // if (array.length ===0) return;
     if (sortedArray[0] === undefined) {
       return null;
