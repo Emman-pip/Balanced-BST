@@ -42,7 +42,7 @@ const tree = () => {
     mainRoot.root = root;
     return root;
   };
-
+  // FIX NESTING ISSUE HERE
   const insert = (value) => {
     let tree = mainRoot.root;
     while (true) {
@@ -68,30 +68,107 @@ const tree = () => {
   };
   // TODO: remove function
   // reqs to do the remove function:
-  // case 1
-  // need icheck yong value before last or target then delete yon if sha yong preceding value
+  // const removeLogic = (tree, value) => {
+  //   // console.log("treevalue", typeof tree.right.value === "number");
 
-  const removeLogic = (tree, value) => {
+  //     // case 2 [nodes with left or right child nodes(one lang)]
+  //     // bug here ay walang laman yong tree.right.value sa line 87
+  //     // for left
+  //     if (
+  //       value === tree.left.value &&
+  //       tree.left.right === null &&
+  //       !tree.left.left === null
+  //     ) {
+  //       console.log(value);
+  //       tree.left = tree.left.left;
+  //       break;
+  //     } else if (
+  //       value === tree.left.value &&
+  //       !tree.left.right === null &&
+  //       tree.left.left === null
+  //     ) {
+  //       console.log(value);
+  //       tree.left = tree.left.right;
+  //       break;
+  //     }
+  //     //  for right side
+  //     else if (
+  //       value === tree.right.value &&
+  //       tree.right.right === null &&
+  //       !tree.right.left === null
+  //     ) {
+  //       console.log(value);
+  //       tree.right = tree.right.left;
+  //       break;
+  //     } else if (
+  //       value === tree.right.value &&
+  //       !tree.right.right === null &&
+  //       tree.right.left === null
+  //     ) {
+  //       console.log(value);
+  //       tree.right = tree.right.right;
+  //       break;
+  //     }
+
+  //     // case 1 (lowest part of bst/no child nodes) !!! DONE
+  //     // need icheck yong value before last or target then delete yon if sha yong preceding value
+
+  //     if (
+  //       !tree.left.value === null &&
+  //       value === tree.left.value &&
+  //       tree.left.right === null &&
+  //       tree.left.left === null
+  //     ) {
+  //       // console.log(value);
+  //       tree.left = null;
+  //       break;
+  //     } else if (
+  //       !tree.right.value === null &&
+  //       value === tree.right.value &&
+  //       tree.right.right === null &&
+  //       tree.right.left === null
+  //     ) {
+  //       tree.right = null;
+  //       break;
+  //     }
+
+  //     // loop through condition
+  //     if (value < tree.value) {
+  //       // console.log(tree.value);
+  //       tree = tree.left;
+  //       continue;
+  //     } else if (value > tree.value) {
+  //       // console.log(tree.value);
+  //       tree = tree.right;
+  //       continue;
+  //     } else if (tree.value == null) {
+  //       console.log(`no ${value} found`);
+  //       return `no ${value} found`;
+  //     }
+  // };
+  const case1 = (value, tree = mainRoot.root) => {
+    console.log("case 1");
+    console.log(tree);
     while (true) {
-      // console.log("treevalue", tree);
-      //case 1
       if (
+        // !tree.left.value != null &&
         value === tree.left.value &&
         tree.left.right === null &&
         tree.left.left === null
       ) {
-        console.log(value);
+        // console.log(value);
         tree.left = null;
         break;
       } else if (
+        // !tree.right.value === null &&
         value === tree.right.value &&
         tree.right.right === null &&
         tree.right.left === null
       ) {
-        console.log(2);
         tree.right = null;
         break;
       }
+
       // loop through condition
       if (value < tree.value) {
         // console.log(tree.value);
@@ -102,37 +179,80 @@ const tree = () => {
         tree = tree.right;
         continue;
       } else if (tree.value == null) {
-        console.log("tree is null");
-        return;
+        console.log(`no ${value} found`);
+        return `no ${value} found`;
       }
     }
   };
+  const case2 = (value, tree = mainRoot.root) => {
+    console.log("case 2");
+  };
+  const case3 = (value, tree = mainRoot.root) => {
+    console.log("case 3");
+  };
 
+  const caseChecker = (tree, value) => {
+    console.log(tree);
+    if (tree.right === null && tree.left === null) {
+      case1(value);
+    } else if (
+      (tree.right != null && tree.left === null) ||
+      (tree.right === null && tree.left != null)
+    ) {
+      case2(value);
+    } else if (tree.right != null && !tree.left != null) {
+      case3(value);
+    }
+  };
+
+  // make seperate functions for case 1, 2, and 3
+  // then check for what is applicable then
   const remove = (value) => {
     let tree = mainRoot.root;
-    removeLogic(tree, value);
-    console.log("tree:", tree);
+    // tree = removeLogic(tree, value);
+    while (true) {
+      if (value < tree.value) {
+        // console.log(tree.value);
+        // console.log("to left");
+
+        tree = tree.left;
+        continue;
+      } else if (value > tree.value) {
+        // console.log(tree.value);
+        // console.log("to right");
+        tree = tree.right;
+        continue;
+      } else if (tree.value === value) {
+        // console.log("equal");
+        caseChecker(tree, value);
+        return tree;
+      } else {
+        console.log("ERROR: value does not exist");
+        return "value does not exist";
+      }
+    }
   };
   return { buildTree, prettyPrint, mainRoot, insert, remove };
 };
 
 const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-console.log(array.sort((a, b) => a - b));
+// console.log(array.sort((a, b) => a - b));
 const balancedBST = tree();
 const root = balancedBST.buildTree(array);
 // balancedBST.prettyPrint(root);
-console.log(balancedBST.mainRoot);
+// console.log(balancedBST.mainRoot);
 // balancedBST.insert(252);
 // balancedBST.insert(932);
 // balancedBST.insert(213);
 // balancedBST.insert(563534);
 // balancedBST.insert(6321);
+balancedBST.insert(24);
+
 // balancedBST.remove(1);
 
+// balancedBST.prettyPrint(balancedBST.mainRoot.root);
 balancedBST.prettyPrint(balancedBST.mainRoot.root);
 
-balancedBST.remove(5);
+// balancedBST.remove(23);
 balancedBST.remove(1);
-balancedBST.remove(9);
-balancedBST.remove(324);
 balancedBST.prettyPrint(balancedBST.mainRoot.root);
