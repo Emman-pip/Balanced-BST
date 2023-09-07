@@ -147,7 +147,7 @@ const tree = () => {
   //     }
   // };
   const case1 = (value, tree = mainRoot.root) => {
-    console.log("case 1");
+    // console.log("case 1");
     try {
       while (true) {
         if (
@@ -156,6 +156,7 @@ const tree = () => {
           tree.left.right === null &&
           tree.left.left === null
         ) {
+          console.log("removed " + value);
           // console.log(value);
           tree.left = null;
           break;
@@ -187,38 +188,45 @@ const tree = () => {
     }
   };
   const case2 = (value, tree = mainRoot.root) => {
-    console.log("case 2");
+    // console.log("case 2");
     try {
-      while (true) {
+      while (tree.left.value) {
+        // console.log(tree.value);
         if (
           // for right
-          value === tree.left.value &&
+          value == tree.left.value &&
           tree.left.right != null &&
-          tree.left.left === null
+          tree.left.left == null
         ) {
-          // console.log(value);
-          //causes nodes to be circular
+          // console.log("right");
+          console.log("removed " + value);
+
           tree.left = tree.left.right;
           break;
         } else if (
           // for left
-          value === tree.right.value &&
-          tree.right.right === null &&
-          tree.right.left != null
+          tree.right.value === value
+          // && tree.right.right === null &&
+          // tree.right.left != null
+          // value === tree.right.value
         ) {
-          tree.right = tree.right.left;
-          break;
+          // console.log("throw");
+          // tree.right = tree.right.left;
+          throw "catch";
         }
-
         // loop through condition
         if (value < tree.value) {
+          // console.log("less");
+          // console.log(tree);
           // console.log(tree.value);
           tree = tree.left;
           continue;
         } else if (value > tree.value) {
           // console.log(tree.value);
+          // console.log("greater");
           tree = tree.right;
-          if (tree == null) {
+
+          if (tree === null) {
             console.log("error");
             break;
           }
@@ -229,8 +237,60 @@ const tree = () => {
         }
       }
     } catch (err) {
-      console.log(tree);
+      console.log("catchtree:", err);
+      // tree = tree.left;
+      // console.log(tree);
+      // console.log(mainRoot.root);
+      // if (
+      //   // for left
+      //   value === tree.right.value &&
+      //   tree.right.right === null &&
+      //   tree.right.left != null
+      // ) {
+      //   console.log("left");
+      //   tree.right = tree.right.left;
+      // }
     }
+  };
+
+  const case2v2 = (value, tree = mainRoot.root) => {
+    console.log("case 2v2");
+    try {
+      while (tree.left.value) {
+        // console.log(tree.left.left);
+        if (
+          // for left
+          value == tree.left.value &&
+          // tree.right.right == null &&
+          tree.left.left != null
+        ) {
+          console.log("removed " + value);
+          tree.left = tree.left.left;
+          break;
+        }
+        // loop through condition
+        if (value < tree.value) {
+          // console.log("less");
+          // console.log(tree);
+          // console.log(tree.value);
+          tree = tree.left;
+          continue;
+        } else if (value > tree.value) {
+          // console.log(tree.value);
+          // console.log("greater");
+          tree = tree.right;
+
+          if (tree === null) {
+            console.log("error");
+            break;
+          }
+          continue;
+        } else if (tree.value == null) {
+          console.log(`no ${value} found`);
+          return `no ${value} found`;
+        }
+      }
+    } catch (err) {}
   };
   const case3 = (value, tree = mainRoot.root) => {
     console.log("case 3");
@@ -241,11 +301,10 @@ const tree = () => {
     console.log(tree);
     if (tree.right === null && tree.left === null) {
       case1(value);
-    } else if (
-      (tree.right != null && tree.left === null) ||
-      (tree.right === null && tree.left != null)
-    ) {
+    } else if (tree.right != null && tree.left === null) {
       case2(value);
+    } else if (tree.right === null && tree.left != null) {
+      case2v2(value);
     } else if (tree.right != null && !tree.left != null) {
       case3(value, tree);
     }
@@ -325,6 +384,9 @@ balancedBST.insert(2);
 balancedBST.prettyPrint(balancedBST.mainRoot.root);
 
 // balancedBST.remove(23);
-balancedBST.remove(2);
+// TODO: FIX CASE 2 left side
+balancedBST.remove(3);
+balancedBST.remove(23);
+balancedBST.remove(1);
 balancedBST.prettyPrint(balancedBST.mainRoot.root);
 // balancedBST.find(213);
