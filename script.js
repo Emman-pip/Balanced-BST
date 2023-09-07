@@ -49,12 +49,14 @@ const tree = () => {
       if (value < tree.value) {
         if (tree.left === null) {
           tree.left = node(value);
+          break;
         }
         tree = tree.left;
         continue;
       } else if (value > tree.value) {
         if (tree.right === null) {
           tree.right = node(value);
+          break;
         }
         tree = tree.right;
         continue;
@@ -64,7 +66,54 @@ const tree = () => {
       }
     }
   };
-  return { buildTree, prettyPrint, mainRoot, insert };
+  // TODO: remove function
+  // reqs to do the remove function:
+  // case 1
+  // need icheck yong value before last or target then delete yon if sha yong preceding value
+
+  const removeLogic = (tree, value) => {
+    while (true) {
+      // console.log("treevalue", tree);
+      //case 1
+      if (
+        value === tree.left.value &&
+        tree.left.right === null &&
+        tree.left.left === null
+      ) {
+        console.log(value);
+        tree.left = null;
+        break;
+      } else if (
+        value === tree.right.value &&
+        tree.right.right === null &&
+        tree.right.left === null
+      ) {
+        console.log(2);
+        tree.right = null;
+        break;
+      }
+      // loop through condition
+      if (value < tree.value) {
+        // console.log(tree.value);
+        tree = tree.left;
+        continue;
+      } else if (value > tree.value) {
+        // console.log(tree.value);
+        tree = tree.right;
+        continue;
+      } else if (tree.value == null) {
+        console.log("tree is null");
+        return;
+      }
+    }
+  };
+
+  const remove = (value) => {
+    let tree = mainRoot.root;
+    removeLogic(tree, value);
+    console.log("tree:", tree);
+  };
+  return { buildTree, prettyPrint, mainRoot, insert, remove };
 };
 
 const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -73,10 +122,17 @@ const balancedBST = tree();
 const root = balancedBST.buildTree(array);
 // balancedBST.prettyPrint(root);
 console.log(balancedBST.mainRoot);
-balancedBST.insert(252);
-balancedBST.insert(932);
-balancedBST.insert(213);
-balancedBST.insert(563534);
-balancedBST.insert(6321);
+// balancedBST.insert(252);
+// balancedBST.insert(932);
+// balancedBST.insert(213);
+// balancedBST.insert(563534);
+// balancedBST.insert(6321);
+// balancedBST.remove(1);
 
+balancedBST.prettyPrint(balancedBST.mainRoot.root);
+
+balancedBST.remove(5);
+balancedBST.remove(1);
+balancedBST.remove(9);
+balancedBST.remove(324);
 balancedBST.prettyPrint(balancedBST.mainRoot.root);
