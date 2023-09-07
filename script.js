@@ -148,81 +148,88 @@ const tree = () => {
   // };
   const case1 = (value, tree = mainRoot.root) => {
     console.log("case 1");
-    while (true) {
+    try {
+      while (true) {
+        if (
+          // !tree.left.value != null &&
+          value === tree.left.value &&
+          tree.left.right === null &&
+          tree.left.left === null
+        ) {
+          // console.log(value);
+          tree.left = null;
+          break;
+        }
+
+        // loop through condition
+        if (value < tree.value) {
+          // console.log(tree.value);
+          tree = tree.left;
+          continue;
+        } else if (value > tree.value) {
+          // console.log(tree.value);
+          tree = tree.right;
+          continue;
+        } else if (tree.value == null) {
+          console.log(`no ${value} found`);
+          return `no ${value} found`;
+        }
+      }
+    } catch (e) {
       if (
-        // !tree.left.value != null &&
-        value === tree.left.value &&
-        tree.left.right === null &&
-        tree.left.left === null
-      ) {
-        // console.log(value);
-        tree.left = null;
-        break;
-      } else if (
         // !tree.right.value === null &&
         value === tree.right.value &&
         tree.right.right === null &&
         tree.right.left === null
       ) {
         tree.right = null;
-        break;
-      }
-
-      // loop through condition
-      if (value < tree.value) {
-        // console.log(tree.value);
-        tree = tree.left;
-        continue;
-      } else if (value > tree.value) {
-        // console.log(tree.value);
-        tree = tree.right;
-        continue;
-      } else if (tree.value == null) {
-        console.log(`no ${value} found`);
-        return `no ${value} found`;
       }
     }
   };
   const case2 = (value, tree = mainRoot.root) => {
     console.log("case 2");
-    while (true) {
-      if (
-        // for right
-        value === tree.left.value &&
-        tree.left.right != null &&
-        tree.left.left === null
-      ) {
-        // console.log(value);
-        //causes nodes to be circular
-        tree.left = tree.left.right;
-        break;
-      } else if (
-        // for left
-        value === tree.right.value &&
-        tree.right.right === null &&
-        tree.right.left != null
-      ) {
-        tree.right = tree.right.left;
-        break;
-      }
-
-      // loop through condition
-      if (value < tree.value) {
-        // console.log(tree.value);
-        tree = tree.left;
-        continue;
-      } else if (value > tree.value) {
-        // console.log(tree.value);
-        tree = tree.right;
-        if (tree == null) {
-          console.log("error");
+    try {
+      while (true) {
+        if (
+          // for right
+          value === tree.left.value &&
+          tree.left.right != null &&
+          tree.left.left === null
+        ) {
+          // console.log(value);
+          //causes nodes to be circular
+          tree.left = tree.left.right;
+          break;
+        } else if (
+          // for left
+          value === tree.right.value &&
+          tree.right.right === null &&
+          tree.right.left != null
+        ) {
+          tree.right = tree.right.left;
           break;
         }
-        continue;
-      } else if (tree.value == null) {
-        console.log(`no ${value} found`);
-        return `no ${value} found`;
+
+        // loop through condition
+        if (value < tree.value) {
+          // console.log(tree.value);
+          tree = tree.left;
+          continue;
+        } else if (value > tree.value) {
+          // console.log(tree.value);
+          tree = tree.right;
+          if (tree == null) {
+            console.log("error");
+            break;
+          }
+          continue;
+        } else if (tree.value == null) {
+          console.log(`no ${value} found`);
+          return `no ${value} found`;
+        }
       }
+    } catch (err) {
+      console.log(tree);
     }
   };
   const case3 = (value, tree = mainRoot.root) => {
@@ -272,30 +279,25 @@ const tree = () => {
     }
   };
 
+  const findLogic = (bst, value) => {
+    while (bst.value) {
+      if (value < bst.value) {
+        bst = bst.left;
+        continue;
+      } else if (value > bst.value) {
+        bst = bst.right;
+        continue;
+      } else if (bst.value === value) {
+        console.log("value found");
+        return true;
+      }
+    }
+  };
+
   const find = (value) => {
     let bst = mainRoot.root;
     try {
-      while (bst.value) {
-        // if ( == null) {
-        //   console.log("value not found");
-        //   return false;
-        // } else
-        if (value < bst.value) {
-          // console.log(tree.value);
-          // console.log("to left");
-
-          bst = bst.left;
-          continue;
-        } else if (value > bst.value) {
-          // console.log(tree.value);
-          // console.log("to right");
-          bst = bst.right;
-          continue;
-        } else if (bst.value === value) {
-          console.log("value found");
-          return true;
-        }
-      }
+      findLogic(bst, value);
     } catch (e) {
       console.log("not found");
       return false;
@@ -323,6 +325,6 @@ balancedBST.insert(2);
 balancedBST.prettyPrint(balancedBST.mainRoot.root);
 
 // balancedBST.remove(23);
-// balancedBST.remove(2);
+balancedBST.remove(2);
 balancedBST.prettyPrint(balancedBST.mainRoot.root);
-balancedBST.find(23);
+// balancedBST.find(213);
