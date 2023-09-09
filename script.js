@@ -255,44 +255,78 @@ const tree = () => {
     }
   };
 
-  const levelOrderArray = [];
+  const levelOrderLogic = (value, bst) => {
+    while (bst.value) {
+      if (value < bst.value) {
+        bst = bst.left;
+        continue;
+      } else if (value > bst.value) {
+        bst = bst.right;
+        continue;
+      } else if (bst.value === value) {
+        // console.log("value found");
+        return bst;
+      }
+    }
+  };
 
   const levelOrder = (func = null) => {
     //TODO: recursive function
     // checks every node left then right
     // will only resolve if wala ng nodes sa under ng lahat
 
-    let treeLeft = mainRoot.root;
-    let treeRight = mainRoot.root;
-    while (true) {
-      try {
-        if (treeLeft == null || treeRight == null) {
-          break;
-        }
-        if (!func == null) {
-        }
-        levelOrderArray.push(treeLeft.value);
-        levelOrderArray.push(treeLeft.left.value);
-        levelOrderArray.push(treeLeft.right.value);
-        treeLeft = treeLeft.left;
-
-        console.log(levelOrderArray);
-        continue;
-        // if (treeLeft.left) {
-        //   treeLeft = treeLeft.left;
-        //   levelOrder();
-        // }
-        // if (treeRight.right) {
-        //   // recursive here
-        //   treeRight = treeRight.right;
-        //   levelOrder();
-        // }
-      } catch (err) {
-        console.log("ERROR:", err);
-        break;
+    const levelOrderArray = [];
+    const queue = [];
+    let pointer1 = mainRoot.root;
+    let pointer2 = mainRoot.root;
+    try {
+      if (!func == null) {
       }
+      // next three lines will be the checker of each node
+
+      if (queue.length === 0) {
+        queue.push(pointer1.value);
+      }
+      queue.push(pointer1.left.value);
+      queue.push(pointer1.right.value);
+
+      // for (
+      //   let i = 0;
+      //   //no node to examine anymore ;
+      //   //i++;
+      //   ) {
+      //   }
+      while (true) {
+        let bst = mainRoot.root;
+
+        levelOrderArray.push(queue.shift());
+        let nextNode = levelOrderLogic(queue[0], bst);
+        if (nextNode.left != null) {
+          queue.push(nextNode.left.value);
+        }
+        if (nextNode.right != null) {
+          queue.push(nextNode.right.value);
+        }
+
+        if (nextNode.right == null && nextNode.left == null) {
+          levelOrderArray.push(queue.shift());
+        }
+
+        if (queue.length === 1 || queue.length === 0) {
+          if (queue.length != 0) {
+            levelOrderArray.push(queue.shift());
+          }
+          if (func != null) {
+            return levelOrderArray.map(func);
+          }
+          return levelOrderArray;
+        }
+      }
+      // levelOrderArray.push(queue.shift());
+    } catch (err) {
+      console.log("ERROR:", err);
+      return "Error: " + err;
     }
-    return levelOrderArray;
   };
   return { buildTree, prettyPrint, mainRoot, insert, remove, find, levelOrder };
 };
@@ -310,6 +344,7 @@ const tree = () => {
   // balancedBST.insert(563534);
   // balancedBST.insert(6321);
   balancedBST.insert(2);
+  balancedBST.insert(0);
 
   // balancedBST.remove(1);
 
@@ -321,7 +356,12 @@ const tree = () => {
   // balancedBST.remove(3);
   // balancedBST.remove(23);
   // balancedBST.remove(1);
-  balancedBST.levelOrder();
+  console.log(
+    balancedBST.levelOrder((list) => {
+      return list ** 9;
+    })
+  );
+  console.log(balancedBST.levelOrder());
   balancedBST.prettyPrint(balancedBST.mainRoot.root);
   // balancedBST.find(213);
 })();
