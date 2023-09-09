@@ -2,6 +2,8 @@ const node = (value, left = null, right = null) => {
   return { value, left, right };
 };
 
+// TODO: return true if successful execution, false otherwise
+
 const tree = () => {
   const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
@@ -66,86 +68,7 @@ const tree = () => {
       }
     }
   };
-  // TODO: remove function
-  // reqs to do the remove function:
-  // const removeLogic = (tree, value) => {
-  //   // console.log("treevalue", typeof tree.right.value === "number");
 
-  //     // case 2 [nodes with left or right child nodes(one lang)]
-  //     // bug here ay walang laman yong tree.right.value sa line 87
-  //     // for left
-  //     if (
-  //       value === tree.left.value &&
-  //       tree.left.right === null &&
-  //       !tree.left.left === null
-  //     ) {
-  //       console.log(value);
-  //       tree.left = tree.left.left;
-  //       break;
-  //     } else if (
-  //       value === tree.left.value &&
-  //       !tree.left.right === null &&
-  //       tree.left.left === null
-  //     ) {
-  //       console.log(value);
-  //       tree.left = tree.left.right;
-  //       break;
-  //     }
-  //     //  for right side
-  //     else if (
-  //       value === tree.right.value &&
-  //       tree.right.right === null &&
-  //       !tree.right.left === null
-  //     ) {
-  //       console.log(value);
-  //       tree.right = tree.right.left;
-  //       break;
-  //     } else if (
-  //       value === tree.right.value &&
-  //       !tree.right.right === null &&
-  //       tree.right.left === null
-  //     ) {
-  //       console.log(value);
-  //       tree.right = tree.right.right;
-  //       break;
-  //     }
-
-  //     // case 1 (lowest part of bst/no child nodes) !!! DONE
-  //     // need icheck yong value before last or target then delete yon if sha yong preceding value
-
-  //     if (
-  //       !tree.left.value === null &&
-  //       value === tree.left.value &&
-  //       tree.left.right === null &&
-  //       tree.left.left === null
-  //     ) {
-  //       // console.log(value);
-  //       tree.left = null;
-  //       break;
-  //     } else if (
-  //       !tree.right.value === null &&
-  //       value === tree.right.value &&
-  //       tree.right.right === null &&
-  //       tree.right.left === null
-  //     ) {
-  //       tree.right = null;
-  //       break;
-  //     }
-
-  //     // loop through condition
-  //     if (value < tree.value) {
-  //       // console.log(tree.value);
-  //       tree = tree.left;
-  //       continue;
-  //     } else if (value > tree.value) {
-  //       // console.log(tree.value);
-  //       tree = tree.right;
-  //       continue;
-  //     } else if (tree.value == null) {
-  //       console.log(`no ${value} found`);
-  //       return `no ${value} found`;
-  //     }
-  // };
   const case1 = (value, tree = mainRoot.root) => {
     // console.log("case 1");
     try {
@@ -238,59 +161,53 @@ const tree = () => {
       }
     } catch (err) {
       console.log("catchtree:", err);
-      // tree = tree.left;
-      // console.log(tree);
-      // console.log(mainRoot.root);
-      // if (
-      //   // for left
-      //   value === tree.right.value &&
-      //   tree.right.right === null &&
-      //   tree.right.left != null
-      // ) {
-      //   console.log("left");
-      //   tree.right = tree.right.left;
-      // }
+    }
+  };
+
+  const case2v2Logic = (value, tree) => {
+    while (tree.left.value) {
+      // console.log(tree.left.left);
+      if (
+        // for left
+        value == tree.left.value &&
+        // tree.right.right == null &&
+        tree.left.left != null
+      ) {
+        console.log("removed " + value);
+        tree.left = tree.left.left;
+        break;
+      }
+      // loop through condition
+      if (value < tree.value) {
+        // console.log("less");
+        // console.log(tree);
+        // console.log(tree.value);
+        tree = tree.left;
+        continue;
+      } else if (value > tree.value) {
+        // console.log(tree.value);
+        // console.log("greater");
+        tree = tree.right;
+
+        if (tree === null) {
+          console.log("error");
+          break;
+        }
+        continue;
+      } else if (tree.value == null) {
+        console.log(`no ${value} found`);
+        return `no ${value} found`;
+      }
     }
   };
 
   const case2v2 = (value, tree = mainRoot.root) => {
     console.log("case 2v2");
     try {
-      while (tree.left.value) {
-        // console.log(tree.left.left);
-        if (
-          // for left
-          value == tree.left.value &&
-          // tree.right.right == null &&
-          tree.left.left != null
-        ) {
-          console.log("removed " + value);
-          tree.left = tree.left.left;
-          break;
-        }
-        // loop through condition
-        if (value < tree.value) {
-          // console.log("less");
-          // console.log(tree);
-          // console.log(tree.value);
-          tree = tree.left;
-          continue;
-        } else if (value > tree.value) {
-          // console.log(tree.value);
-          // console.log("greater");
-          tree = tree.right;
-
-          if (tree === null) {
-            console.log("error");
-            break;
-          }
-          continue;
-        } else if (tree.value == null) {
-          console.log(`no ${value} found`);
-          return `no ${value} found`;
-        }
-      }
-    } catch (err) {}
+      case2v2Logic(value, tree);
+    } catch (err) {
+      console.log("catcherror: " + err);
+    }
   };
   const case3 = (value, tree = mainRoot.root) => {
     console.log("case 3");
@@ -365,28 +282,30 @@ const tree = () => {
   return { buildTree, prettyPrint, mainRoot, insert, remove, find };
 };
 
-const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-// console.log(array.sort((a, b) => a - b));
-const balancedBST = tree();
-const root = balancedBST.buildTree(array);
-// balancedBST.prettyPrint(root);
-// console.log(balancedBST.mainRoot);
-// balancedBST.insert(252);
-// balancedBST.insert(932);
-// balancedBST.insert(213);
-// balancedBST.insert(563534);
-// balancedBST.insert(6321);
-balancedBST.insert(2);
+(() => {
+  const array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+  // console.log(array.sort((a, b) => a - b));
+  const balancedBST = tree();
+  const root = balancedBST.buildTree(array);
+  // balancedBST.prettyPrint(root);
+  // console.log(balancedBST.mainRoot);
+  // balancedBST.insert(252);
+  // balancedBST.insert(932);
+  // balancedBST.insert(213);
+  // balancedBST.insert(563534);
+  // balancedBST.insert(6321);
+  balancedBST.insert(2);
 
-// balancedBST.remove(1);
+  // balancedBST.remove(1);
 
-// balancedBST.prettyPrint(balancedBST.mainRoot.root);
-balancedBST.prettyPrint(balancedBST.mainRoot.root);
+  // balancedBST.prettyPrint(balancedBST.mainRoot.root);
+  balancedBST.prettyPrint(balancedBST.mainRoot.root);
 
-// balancedBST.remove(23);
-// TODO: FIX CASE 2 left side
-balancedBST.remove(3);
-balancedBST.remove(23);
-balancedBST.remove(1);
-balancedBST.prettyPrint(balancedBST.mainRoot.root);
-// balancedBST.find(213);
+  // balancedBST.remove(23);
+  // TODO: FIX CASE 2 left side
+  // balancedBST.remove(3);
+  // balancedBST.remove(23);
+  // balancedBST.remove(1);
+  balancedBST.prettyPrint(balancedBST.mainRoot.root);
+  // balancedBST.find(213);
+})();
