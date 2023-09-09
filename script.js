@@ -74,24 +74,20 @@ const tree = () => {
     try {
       while (true) {
         if (
-          // !tree.left.value != null &&
           value === tree.left.value &&
           tree.left.right === null &&
           tree.left.left === null
         ) {
           console.log("removed " + value);
-          // console.log(value);
           tree.left = null;
           break;
         }
 
         // loop through condition
         if (value < tree.value) {
-          // console.log(tree.value);
           tree = tree.left;
           continue;
         } else if (value > tree.value) {
-          // console.log(tree.value);
           tree = tree.right;
           continue;
         } else if (tree.value == null) {
@@ -101,7 +97,6 @@ const tree = () => {
       }
     } catch (e) {
       if (
-        // !tree.right.value === null &&
         value === tree.right.value &&
         tree.right.right === null &&
         tree.right.left === null
@@ -111,17 +106,14 @@ const tree = () => {
     }
   };
   const case2 = (value, tree = mainRoot.root) => {
-    // console.log("case 2");
     try {
       while (tree.left.value) {
-        // console.log(tree.value);
         if (
           // for right
           value == tree.left.value &&
           tree.left.right != null &&
           tree.left.left == null
         ) {
-          // console.log("right");
           console.log("removed " + value);
 
           tree.left = tree.left.right;
@@ -129,24 +121,14 @@ const tree = () => {
         } else if (
           // for left
           tree.right.value === value
-          // && tree.right.right === null &&
-          // tree.right.left != null
-          // value === tree.right.value
         ) {
-          // console.log("throw");
-          // tree.right = tree.right.left;
           throw "catch";
         }
         // loop through condition
         if (value < tree.value) {
-          // console.log("less");
-          // console.log(tree);
-          // console.log(tree.value);
           tree = tree.left;
           continue;
         } else if (value > tree.value) {
-          // console.log(tree.value);
-          // console.log("greater");
           tree = tree.right;
 
           if (tree === null) {
@@ -166,11 +148,9 @@ const tree = () => {
 
   const case2v2Logic = (value, tree) => {
     while (tree.left.value) {
-      // console.log(tree.left.left);
       if (
         // for left
         value == tree.left.value &&
-        // tree.right.right == null &&
         tree.left.left != null
       ) {
         console.log("removed " + value);
@@ -179,14 +159,9 @@ const tree = () => {
       }
       // loop through condition
       if (value < tree.value) {
-        // console.log("less");
-        // console.log(tree);
-        // console.log(tree.value);
         tree = tree.left;
         continue;
       } else if (value > tree.value) {
-        // console.log(tree.value);
-        // console.log("greater");
         tree = tree.right;
 
         if (tree === null) {
@@ -279,7 +254,47 @@ const tree = () => {
       return false;
     }
   };
-  return { buildTree, prettyPrint, mainRoot, insert, remove, find };
+
+  const levelOrderArray = [];
+
+  const levelOrder = (func = null) => {
+    //TODO: recursive function
+    // checks every node left then right
+    // will only resolve if wala ng nodes sa under ng lahat
+
+    let treeLeft = mainRoot.root;
+    let treeRight = mainRoot.root;
+    while (true) {
+      try {
+        if (treeLeft == null || treeRight == null) {
+          break;
+        }
+        if (!func == null) {
+        }
+        levelOrderArray.push(treeLeft.value);
+        levelOrderArray.push(treeLeft.left.value);
+        levelOrderArray.push(treeLeft.right.value);
+        treeLeft = treeLeft.left;
+
+        console.log(levelOrderArray);
+        continue;
+        // if (treeLeft.left) {
+        //   treeLeft = treeLeft.left;
+        //   levelOrder();
+        // }
+        // if (treeRight.right) {
+        //   // recursive here
+        //   treeRight = treeRight.right;
+        //   levelOrder();
+        // }
+      } catch (err) {
+        console.log("ERROR:", err);
+        break;
+      }
+    }
+    return levelOrderArray;
+  };
+  return { buildTree, prettyPrint, mainRoot, insert, remove, find, levelOrder };
 };
 
 (() => {
@@ -306,6 +321,7 @@ const tree = () => {
   // balancedBST.remove(3);
   // balancedBST.remove(23);
   // balancedBST.remove(1);
+  balancedBST.levelOrder();
   balancedBST.prettyPrint(balancedBST.mainRoot.root);
   // balancedBST.find(213);
 })();
