@@ -269,6 +269,9 @@ const tree = () => {
       }
     }
   };
+  //TODO: INORDER (LNR)
+  //TODO: PREORDER (LRN)
+  //TODO: POSTORDER (NLR)
 
   const levelOrder = (func = null) => {
     //TODO: recursive function
