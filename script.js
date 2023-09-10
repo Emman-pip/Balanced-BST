@@ -270,6 +270,27 @@ const tree = () => {
     }
   };
   //TODO: INORDER (LNR)
+  const inorder = (func = null) => {
+    const queue = [];
+    let originalTree = mainRoot.root;
+    let bst = originalTree;
+    condition = "left";
+
+    // TODO: find where recursion/ loop whould be applied to
+
+    //code for getting to the lowest value in BST
+    while (bst.left.left != null && !queue.includes(bst.left.value)) {
+      bst = bst.left;
+    }
+
+    //code to be the heart of queuing
+    queue.push(bst.left.value);
+    queue.push(bst.value);
+    queue.push(bst.right.value);
+
+    console.log(queue);
+    console.log(originalTree);
+  };
   //TODO: PREORDER (LRN)
   //TODO: POSTORDER (NLR)
 
@@ -281,7 +302,6 @@ const tree = () => {
     const levelOrderArray = [];
     const queue = [];
     let pointer1 = mainRoot.root;
-    let pointer2 = mainRoot.root;
     try {
       if (!func == null) {
       }
@@ -331,7 +351,16 @@ const tree = () => {
       return "Error: " + err;
     }
   };
-  return { buildTree, prettyPrint, mainRoot, insert, remove, find, levelOrder };
+  return {
+    buildTree,
+    prettyPrint,
+    mainRoot,
+    insert,
+    remove,
+    find,
+    levelOrder,
+    inorder,
+  };
 };
 
 (() => {
@@ -359,12 +388,13 @@ const tree = () => {
   // balancedBST.remove(3);
   // balancedBST.remove(23);
   // balancedBST.remove(1);
-  console.log(
-    balancedBST.levelOrder((list) => {
-      return list ** 9;
-    })
-  );
-  console.log(balancedBST.levelOrder());
+  // console.log(
+  //   balancedBST.levelOrder((list) => {
+  //     return list ** 9;
+  //   })
+  // );
+  balancedBST.inorder();
+  // console.log(balancedBST.levelOrder());
   balancedBST.prettyPrint(balancedBST.mainRoot.root);
   // balancedBST.find(213);
 })();
