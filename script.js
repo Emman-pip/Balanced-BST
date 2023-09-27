@@ -269,19 +269,11 @@ const tree = () => {
       }
     }
   };
-  //TODO: INORDER (LNR)
-  //TODO: PREORDER (LRN)
-  //TODO: POSTORDER (NLR)
 
   const levelOrder = (func = null) => {
-    //TODO: recursive function
-    // checks every node left then right
-    // will only resolve if wala ng nodes sa under ng lahat
-
     const levelOrderArray = [];
     const queue = [];
     let pointer1 = mainRoot.root;
-    let pointer2 = mainRoot.root;
     try {
       if (!func == null) {
       }
@@ -292,13 +284,6 @@ const tree = () => {
       }
       queue.push(pointer1.left.value);
       queue.push(pointer1.right.value);
-
-      // for (
-      //   let i = 0;
-      //   //no node to examine anymore ;
-      //   //i++;
-      //   ) {
-      //   }
       while (true) {
         let bst = mainRoot.root;
 
@@ -331,7 +316,81 @@ const tree = () => {
       return "Error: " + err;
     }
   };
-  return { buildTree, prettyPrint, mainRoot, insert, remove, find, levelOrder };
+
+  //TODO: INORDER (LNR)
+  const inorder = (func) => {
+    const result = [];
+    const trueRoot = mainRoot.root;
+    let i = 0;
+    const left = "left";
+    const right = "right";
+    const value = "value";
+    let direction = left;
+    let root = trueRoot;
+    while (true) {
+      if (root[left] === null || root[right] === null) {
+        root = trueRoot;
+      }
+      while (true) {
+        let leftnut = root[direction][direction];
+        // console.log(!(root.left.left.value === null));
+
+        // can be refactored to a recursive function for easier logic
+        // if (root[right])
+
+        if (result.includes(root[value])) {
+          // console.log(root);
+          if (root[right] === null) {
+            break;
+          }
+          root = root[right];
+          // console.log(root);
+          if (!(root[left] === null)) {
+            break;
+          }
+          result.push(root[value]);
+          break;
+        }
+
+        if (result.includes(root[direction][value])) {
+          result.push(root[value]);
+          continue;
+        }
+        if (leftnut === null) {
+          result.push(root[direction][value]);
+        }
+        if (!(leftnut === null)) {
+          console.log("not null yet");
+          root = root[direction];
+          continue;
+        } else {
+          console.log("lol");
+          result.push(root[value]);
+          console.log("broken!");
+          continue;
+        }
+      }
+      console.log(i, result);
+      if (i === 10) {
+        console.log("done");
+        break;
+      }
+      i++;
+    }
+  };
+  //TODO: PREORDER (LRN)
+  //TODO: POSTORDER (NLR)
+
+  return {
+    buildTree,
+    prettyPrint,
+    mainRoot,
+    insert,
+    remove,
+    find,
+    levelOrder,
+    inorder,
+  };
 };
 
 (() => {
@@ -359,12 +418,14 @@ const tree = () => {
   // balancedBST.remove(3);
   // balancedBST.remove(23);
   // balancedBST.remove(1);
-  console.log(
-    balancedBST.levelOrder((list) => {
-      return list ** 9;
-    })
-  );
-  console.log(balancedBST.levelOrder());
+  // console.log(
+  //   balancedBST.levelOrder((list) => {
+  //     return list;
+  //   })
+  // );
+  balancedBST.inorder();
+
+  // console.log(balancedBST.levelOrder());
   balancedBST.prettyPrint(balancedBST.mainRoot.root);
   // balancedBST.find(213);
 })();
