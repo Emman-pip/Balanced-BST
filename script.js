@@ -321,14 +321,17 @@ const tree = () => {
   const inorder = (func) => {
     const result = [];
     const trueRoot = mainRoot.root;
-    let i = 0;
+    // let i = 0;
     const left = "left";
     const right = "right";
     const value = "value";
     let direction = left;
     let root = trueRoot;
+    let operation;
+    const reset = 0;
+    const keep = 1;
     while (true) {
-      if (root[left] === null || root[right] === null) {
+      if (operation === reset) {
         root = trueRoot;
       }
       while (true) {
@@ -339,16 +342,19 @@ const tree = () => {
         // if (root[right])
 
         if (result.includes(root[value])) {
-          // console.log(root);
           if (root[right] === null) {
+            operation = reset;
+
             break;
           }
           root = root[right];
-          // console.log(root);
           if (!(root[left] === null)) {
+            operation = keep;
+
             break;
           }
           result.push(root[value]);
+          operation = reset;
           break;
         }
 
@@ -370,12 +376,12 @@ const tree = () => {
           continue;
         }
       }
-      console.log(i, result);
-      if (i === 10) {
-        console.log("done");
-        break;
-      }
-      i++;
+      // console.log(result);
+      // if (i === 10) {
+      //   console.log("done");
+      //   break;
+      // }
+      // i++;
     }
   };
   //TODO: PREORDER (LRN)
@@ -400,11 +406,11 @@ const tree = () => {
   const root = balancedBST.buildTree(array);
   // balancedBST.prettyPrint(root);
   // console.log(balancedBST.mainRoot);
-  // balancedBST.insert(252);
-  // balancedBST.insert(932);
-  // balancedBST.insert(213);
-  // balancedBST.insert(563534);
-  // balancedBST.insert(6321);
+  balancedBST.insert(252);
+  balancedBST.insert(932);
+  balancedBST.insert(213);
+  balancedBST.insert(563534);
+  balancedBST.insert(6321);
   balancedBST.insert(2);
   balancedBST.insert(0);
 
