@@ -318,7 +318,7 @@ const tree = () => {
   };
 
   //TODO: INORDER (LNR)
-  const inorder = (func) => {
+  const inorder = (func = null) => {
     const result = [];
     const trueRoot = mainRoot.root;
     // let i = 0;
@@ -378,11 +378,15 @@ const tree = () => {
       }
       if (result[result.length - 1] === result[result.length - 2]) {
         result.pop();
-        console.log(result);
         break;
       }
       // i++;
     }
+    if (func === null) {
+      return result;
+    }
+    const processed = result.map(func);
+    return processed;
   };
   //TODO: PREORDER (LRN)
   //TODO: POSTORDER (NLR)
