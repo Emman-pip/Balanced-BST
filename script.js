@@ -366,21 +366,21 @@ const tree = () => {
           result.push(root[direction][value]);
         }
         if (!(leftnut === null)) {
-          console.log("not null yet");
+          // console.log("not null yet");
           root = root[direction];
           continue;
         } else {
-          console.log("lol");
+          // console.log("lol");
           result.push(root[value]);
-          console.log("broken!");
+          // console.log("broken!");
           continue;
         }
       }
-      // console.log(result);
-      // if (i === 10) {
-      //   console.log("done");
-      //   break;
-      // }
+      if (result[result.length - 1] === result[result.length - 2]) {
+        result.pop();
+        console.log(result);
+        break;
+      }
       // i++;
     }
   };
@@ -429,7 +429,7 @@ const tree = () => {
   //     return list;
   //   })
   // );
-  balancedBST.inorder();
+  console.log(balancedBST.inorder());
 
   // console.log(balancedBST.levelOrder());
   balancedBST.prettyPrint(balancedBST.mainRoot.root);
